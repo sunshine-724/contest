@@ -724,9 +724,9 @@ def UFO():
             if size<110:
                 size+=1
                 if home_modo[3][0]==True:
-                    UFO=pg.transform.scale(pg.image.load("assets/ジェムハンターUFO/goald/UFO.png"), (int(163-163*size//110), int(115-115*size//110))) 
+                    UFO=pg.transform.scale(pg.image.load("assets/UFO/goald/UFO.png"), (int(163-163*size//110), int(115-115*size//110))) 
                 else:
-                    UFO=pg.transform.scale(pg.image.load("assets/ジェムハンターUFO/normal/UFO.png"), (int(163-163*size//110), int(115-115*size//110)))             
+                    UFO=pg.transform.scale(pg.image.load("assets/UFO/normal/UFO.png"), (int(163-163*size//110), int(115-115*size//110)))             
             if size==110:
                 se_last.play()
                 size=111
