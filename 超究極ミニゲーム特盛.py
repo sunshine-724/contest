@@ -18,6 +18,7 @@ home_y=0
 white=(255,255,255)
 screen.fill(white)
 home_unit=("秒","ミス","貫","個")
+home_game_mode_name=(i+"モード" for i in ("ラノベ","チョコ","炙り","金ゴールド"))
 home_modo=[[False,"???"] for i in range(len(home_unit))]
 home_bestscore=["-" for i in range(len(home_modo))]
 home_clearcount=[0 for i in range(4)]
@@ -199,7 +200,6 @@ def fish():
             se_search.set_volume(volume)
             
         for event in pg.event.get():
-                global home_scene
                 if event.type == MOUSEBUTTONDOWN and (event.button==1 or event.button==3):
                     if clearcount<8 and mouse_y>=up_limit-12:
                         chosen_x=(mouse_x-left_limit)//fontsize_and_interval
@@ -247,11 +247,9 @@ def fish():
                         manual()
                         starttime+=pg.time.get_ticks()-manual_time
                     elif clearcount>8:
-                        home_scene=0
                         se_search.stop()
                         run=False
                 if event.type == pg.KEYDOWN and event.key == pg.K_r:
-                        home_scene=0
                         se_search.stop()
                         run=False
                 if ((event.type == pg.KEYDOWN and event.key == pg.K_SPACE) or(event.type == MOUSEBUTTONDOWN and (event.button==1 or event.button==3) and mouse_y<=up_limit-30 and 420<mouse_x<860) ) and support>0 and search==False and delete__[0]==-50:
@@ -385,7 +383,6 @@ def window():
             screen.blit(window_stop_button,(1020,5))
         screen.blit(dustcloth,(dustcloth_x,dustcloth_y)) 
         for event in pg.event.get():
-                global home_scene
                 if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                     if count<70:
                         if seigyo==1:
@@ -416,14 +413,7 @@ def window():
                                 miss+=1
                     elif breakcount<40:
                         breakcount+=1
-                    # elif breakcount==41:
-                    #     home_scene=0
-                    #     if count==0:
-                    #         star[1][6][0]=1
-                    #         star[1][6][2]="「ワイプ・ザ・ウィンドウ」で窓を拭かずに戻る"
-                    #     run=False
                 if event.type == pg.KEYDOWN and event.key == pg.K_r:
-                        home_scene=0
                         if count==0:
                             star[1][6][0]=1
                             star[1][6][2]="「お菓子の家」で窓を拭かずに戻る"
@@ -593,8 +583,6 @@ def salmon():
                     pressedcolor=(255,100,100)
 
             if (event.type == pg.KEYDOWN and event.key == pg.K_r) or (finished and event.type == MOUSEBUTTONDOWN and (event.button==1 or event.button==3) and (1020 > mouse_x or 650 > mouse_y or salmo_on_manual==False)):
-                        global home_scene
-                        home_scene=0
                         if home_clearcount[2]==0  or  home_bestscore[2]<count:
                             home_bestscore[2]=count
                         if count>0:
@@ -687,8 +675,6 @@ def UFO():
         for event in pg.event.get():
             mouse_x,mouse_y=pg.mouse.get_pos()
             if (event.type == pg.KEYDOWN and event.key == pg.K_r) or (event.type == MOUSEBUTTONDOWN and (event.button==1 or event.button==3) and meter_y==2000):
-                global home_scene
-                home_scene=0
                 run=False
             if event.type == MOUSEBUTTONDOWN and (event.button==1 or event.button==3) and 1100 <= mouse_x and mouse_y <= 52:
                 manual_time=pg.time.get_ticks()
@@ -841,6 +827,7 @@ def play_bgm():
     pg.mixer.music.load("assets/home/sound/bgm.wav")
     pg.mixer.music.play(loops=-1)
 play_bgm()
+home_game=(fish,window,salmon,UFO)
 #メインループ＝＝＝ ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 while home_run:
     if home_scene==0 or home_scene==1:
@@ -1021,22 +1008,25 @@ while home_run:
             event=None
             pg.event.clear
     if home_scene>=4:
-        if home_scene==4:
-            fish()
-            if getstarcount(0)==0:
-                home_modo[0][1]="ラノベモード"
-        if home_scene==5:
-            window()
-            if getstarcount(1)==0 :
-                home_modo[1][1]="チョコモード"
-        if home_scene==6:
-            salmon()
-            if getstarcount(2)==0:
-                home_modo[2][1]="炙りモード"
-        if home_scene==7:
-            UFO()
-            if getstarcount(3)==0:
-               home_modo[3][1]="ゴールドモード"
+        # if home_scene==4:
+        print(home_game)
+        print("a")
+        home_game[home_scene-4]()
+        if getstarcount(0)==0:
+            home_modo[home_scene-4][1]=home_game_mode_name[home_scene-4]
+        home_scene=0
+        # if home_scene==5:
+        #     window()
+        #     if getstarcount(1)==0 :
+        #         home_modo[1][1]="チョコモード"
+        # if home_scene==6:
+        #     salmon()
+        #     if getstarcount(2)==0:
+        #         home_modo[2][1]="炙りモード"
+        # if home_scene==7:
+        #     UFO()
+        #     if getstarcount(3)==0:
+        #        home_modo[3][1]="ゴールドモード"
         play_bgm() 
 #更新
     pg.draw.rect(screen, (0, 0, 0), (0, screen_height, screen_width, black_line_y))
