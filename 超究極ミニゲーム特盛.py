@@ -688,12 +688,12 @@ def UFO():
                     item[i][3]+=pg.time.get_ticks()-manual_time
         pressed_key =pg.key.get_pressed()
 
-        UFO_pushedkeycount=0
+        pushedkeycount=0
         for i in range(4):
             if pressed_key[pushedkey[i]]:
                 pushedkeycount+=1 
 
-        if UFO_pushedkeycount==2:
+        if pushedkeycount==2:
             speed=5
         else:
             speed=7
